@@ -1,7 +1,6 @@
 import boto3
 import datetime
-from datetime 
-import datetime
+from datetime import datetime
 import time
 import traceback
 import csv
