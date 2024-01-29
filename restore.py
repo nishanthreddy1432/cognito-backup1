@@ -332,7 +332,7 @@ class Cognito:
 def main():
     REGION = "us-east-2"
     COGNITO_ID = "us-east-1_2etl4eauM"
-    BACKUP_DATE="20240129-1319"
+    BACKUP_DATE="20240129-1327"
     BACKUP_FILE_USERS = "cognito_backup_users_"+BACKUP_DATE+".csv"
     BACKUP_FILE_GROUPS = "cognito_backup_groups_"+BACKUP_DATE+".csv"
     BACKUP_BUCKET = "userpool-backup"
