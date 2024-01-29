@@ -157,7 +157,7 @@ def main():
     FOLDER = os.environ.get('WORKSPACE', '.'), '/'
 
     # DOWNLOAD GROUPS
-    cognitS3.downloadFile(BACKUP_FILE_GROUPS, os.path.join(FOLDER, BACKUP_FILE_GROUPS[0])
+    cognitS3.downloadFile(BACKUP_FILE_GROUPS, os.path.join(FOLDER, BACKUP_FILE_GROUPS[0]))
 
     # IMPORT GROUPS
     csvGroups = CSV(os.path.join(FOLDER, BACKUP_FILE_GROUPS))
