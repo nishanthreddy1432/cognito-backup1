@@ -42,7 +42,7 @@ class S3:
 
 class CSV:
     FILENAME = ""
-    FOLDER = os.environ.get('WORKSPACE', '.'), '/'
+    FOLDER = os.environ.get('WORKSPACE', '.')
 
     def __init__(self, filename):
         self.FILENAME = filename
