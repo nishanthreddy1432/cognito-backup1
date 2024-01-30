@@ -1,4 +1,3 @@
-import os
 import boto3
 import datetime
 from datetime import datetime
@@ -6,6 +5,7 @@ import time
 import traceback
 import csv
 import requests
+import os
 
 bsess = boto3.Session(profile_name='default')
 
@@ -42,7 +42,7 @@ class S3:
 
 class CSV:
     FILENAME = ""
-    FOLDER = os.environ.get('WORKSPACE', '.')
+    FOLDER = os.getcwd() + '/'
 
     def __init__(self, filename):
         self.FILENAME = filename
@@ -78,7 +78,7 @@ class Cognito:
                         'UserPoolId': self.USERPOOLID
                     }
                     for attribute in self.ATTRIBUTES:
-                        
+
                         if attribute.isnumeric():
                             kwargs[attribute] = int(group[attribute])
                         elif attribute == "Precedence":
@@ -154,13 +154,12 @@ def main():
     BACKUP_FILE_GROUPS = "cognito_backup_groups_"+BACKUP_DATE+".csv"
     BACKUP_BUCKET = "userpool-backup"
     cognitS3 = S3(BACKUP_BUCKET, REGION)
-    FOLDER = os.environ.get('WORKSPACE', '.')
 
     # DOWNLOAD GROUPS
-    cognitS3.downloadFile(BACKUP_FILE_GROUPS, os.path.join(FOLDER, BACKUP_FILE_GROUPS[0]))
+    cognitS3.downloadFile(BACKUP_FILE_GROUPS, FOLDER + BACKUP_FILE_GROUPS)
 
     # IMPORT GROUPS
-    csvGroups = CSV(os.path.join(FOLDER, BACKUP_FILE_GROUPS))
+    csvGroups = CSV(FOLDER + BACKUP_FILE_GROUPS)
     groups = csvGroups.readBackup()
     GATTRIBUTES = [
         'GroupName',
@@ -171,7 +170,7 @@ def main():
     cognito.importGroups(groups, BACKUP_DATE)
 
     # DOWNLOAD USERS
-    cognitS3.downloadFile(BACKUP_FILE_USERS, os.path.join(FOLDER, BACKUP_FILE_USERS))
+    cognitS3.downloadFile(BACKUP_FILE_USERS, FOLDER + BACKUP_FILE_USERS)
 
     # IMPORT USERS
     ATTRIBUTES = [
@@ -179,6 +178,6 @@ def main():
         'username'
     ]
     cognitoUsers = Cognito(COGNITO_ID, REGION, ATTRIBUTES)
-    cognitoUsers.importUsers(os.path.join(FOLDER, BACKUP_FILE_USERS))
+    cognitoUsers.importUsers(FOLDER + BACKUP_FILE_USERS)
 
 main()
