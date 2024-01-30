@@ -122,14 +122,12 @@ class Cognito:
 
 class CSV:
     FILENAME = ""
-    FOLDER = ''
+    FOLDER = 'C:/Users/nisha/.jenkins/workspace/test/dev/11/'
     ATTRIBUTES = ""
     CSV_LINES = []
 
     def __init__(self, attributes, prefix):
         self.ATTRIBUTES = attributes
-        # Use Jenkins workspace as the base folder
-        self.FOLDER = os.environ.get('WORKSPACE', '')
         self.FILENAME = "cognito_backup_" + prefix + "_" + datetime.now().strftime("%Y%m%d-%H%M") + ".csv"
         self.CSV_LINES = []
 
@@ -182,8 +180,7 @@ class CSV:
     
     def saveToFile(self):
         try:
-            # Use os.path.join to create the full path
-            csvFile = open(os.path.join(self.FOLDER, self.FILENAME), 'a')
+            csvFile = open(self.FOLDER + "/" + self.FILENAME, 'a')
             csvFile.writelines(self.CSV_LINES)
             csvFile.close()
         except Exception as e:
@@ -206,6 +203,48 @@ class S3:
             Logs.critical(f"Error uploading the backup file {src} to S3: {e}")
             Logs.critical(traceback.format_exc())
             exit()
+
+"""def main():
+    REGION = "us-east-2"
+    COGNITO_ID = "us-east-1_0FCERKXAj"
+    BACKUP_BUCKET = "userpool-backup"
+    GATTRIBUTES = [
+        'GroupName',
+        'Description',
+        'Precedence'
+    ]
+
+    cognito = Cognito(COGNITO_ID, REGION, [])
+    cognitoS3 = S3(BACKUP_BUCKET, REGION)
+
+    ATTRIBUTES = cognito.getAttributes()
+    csvUsers = CSV(ATTRIBUTES, "users")
+    user_records = cognito.listUsers()
+    csvUsers.generateUserContent(user_records)
+    csvUsers.saveToFile()    
+    Logs.info("Total Exported User Records: {}".format(len(csvUsers.CSV_LINES)))
+    cognitoS3.uploadFile(csvUsers.FOLDER + "/" + csvUsers.FILENAME, csvUsers.FILENAME)
+
+    csvGroups = CSV(GATTRIBUTES, "groups")
+    group_records = cognito.listGroups()
+
+    for group in group_records:
+        csvGroups.generateGroupContent([group])
+        group_users = cognito.listUsersInGroup(group_name=group['GroupName'])
+        csvUsers = CSV(ATTRIBUTES, "users_{}".format(group['GroupName']))
+        csvUsers.generateUserContent(group_users)
+        csvUsers.saveToFile()
+
+    Logs.info("Total Exported Group Records: {}".format(len(csvGroups.CSV_LINES)))
+
+    groups_filename = csvGroups.FILENAME
+    cognitoS3.uploadFile(csvGroups.FOLDER + "/" + groups_filename, groups_filename)
+
+    for group in group_records:
+        users_filename = "cognito_backup_users_{}_{}.csv".format(group['GroupName'], datetime.now().strftime("%Y%m%d-%H%M"))
+        cognitoS3.uploadFile(csvUsers.FOLDER + "/" + users_filename, users_filename)
+
+main()"""
 
 def main():
     REGION = "us-east-2"
@@ -250,5 +289,8 @@ def main():
         # Upload user data for each group
         users_filename = "cognito_backup_users_{}_{}.csv".format(group['GroupName'], datetime.now().strftime("%Y%m%d-%H%M"))
         cognitoS3.uploadFile(csvUsers.FOLDER + "/" + users_filename, users_filename)
+
+
+
 
 main()
