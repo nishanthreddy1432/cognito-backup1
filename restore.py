@@ -1,11 +1,13 @@
 import boto3
 import datetime
-from datetime import datetime
 import time
 import traceback
 import csv
 import requests
 import os
+
+# Use Jenkins WORKSPACE if available, otherwise use the current directory
+WORKSPACE = os.environ.get('WORKSPACE', os.getcwd())
 
 bsess = boto3.Session(profile_name='default')
 
@@ -42,7 +44,7 @@ class S3:
 
 class CSV:
     FILENAME = ""
-    FOLDER = os.getcwd() + '/'
+    FOLDER = os.path.join(WORKSPACE, 'dev/11/')
 
     def __init__(self, filename):
         self.FILENAME = filename
@@ -78,7 +80,7 @@ class Cognito:
                         'UserPoolId': self.USERPOOLID
                     }
                     for attribute in self.ATTRIBUTES:
-
+                        
                         if attribute.isnumeric():
                             kwargs[attribute] = int(group[attribute])
                         elif attribute == "Precedence":
@@ -155,14 +157,11 @@ def main():
     BACKUP_BUCKET = "userpool-backup"
     cognitS3 = S3(BACKUP_BUCKET, REGION)
 
-    # Use os.getcwd() to get Jenkins working directory
-    FOLDER = os.getcwd() + '/'
-
     # DOWNLOAD GROUPS
-    cognitS3.downloadFile(BACKUP_FILE_GROUPS, FOLDER + BACKUP_FILE_GROUPS)
+    cognitS3.downloadFile(BACKUP_FILE_GROUPS, os.path.join(WORKSPACE, BACKUP_FILE_GROUPS))
 
     # IMPORT GROUPS
-    csvGroups = CSV(FOLDER + BACKUP_FILE_GROUPS)
+    csvGroups = CSV(os.path.join(WORKSPACE, BACKUP_FILE_GROUPS))
     groups = csvGroups.readBackup()
     GATTRIBUTES = [
         'GroupName',
@@ -173,7 +172,7 @@ def main():
     cognito.importGroups(groups, BACKUP_DATE)
 
     # DOWNLOAD USERS
-    cognitS3.downloadFile(BACKUP_FILE_USERS, FOLDER + BACKUP_FILE_USERS)
+    cognitS3.downloadFile(BACKUP_FILE_USERS, os.path.join(WORKSPACE, BACKUP_FILE_USERS))
 
     # IMPORT USERS
     ATTRIBUTES = [
@@ -181,6 +180,6 @@ def main():
         'username'
     ]
     cognitoUsers = Cognito(COGNITO_ID, REGION, ATTRIBUTES)
-    cognitoUsers.importUsers(FOLDER + BACKUP_FILE_USERS)
+    cognitoUsers.importUsers(os.path.join(WORKSPACE, BACKUP_FILE_USERS))
 
 main()
