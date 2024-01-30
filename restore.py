@@ -155,6 +155,9 @@ def main():
     BACKUP_BUCKET = "userpool-backup"
     cognitS3 = S3(BACKUP_BUCKET, REGION)
 
+    # Use os.getcwd() to get Jenkins working directory
+    FOLDER = os.getcwd() + '/'
+
     # DOWNLOAD GROUPS
     cognitS3.downloadFile(BACKUP_FILE_GROUPS, FOLDER + BACKUP_FILE_GROUPS)
 
