@@ -42,7 +42,7 @@ class S3:
 
 class CSV:
     FILENAME = ""
-    FOLDER = 'C:/Users/nisha/.jenkins/workspace/test/dev/11/'
+    FOLDER = os.environ.get('WORKSPACE', '')
 
     def __init__(self, filename):
         self.FILENAME = filename
@@ -156,7 +156,7 @@ def main():
     BACKUP_FILE_GROUPS = "cognito_backup_groups_"+BACKUP_DATE+".csv"
     BACKUP_BUCKET = "userpool-backup"
     cognitS3 = S3(BACKUP_BUCKET, REGION)
-    FOLDER = 'C:/Users/nisha/.jenkins/workspace/test/dev/11/'
+    FOLDER = os.environ.get('WORKSPACE', '')
 
     # DOWNLOAD GROUPS
     cognitS3.downloadFile(BACKUP_FILE_GROUPS, FOLDER + BACKUP_FILE_GROUPS)
