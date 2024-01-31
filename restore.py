@@ -88,7 +88,7 @@ class Cognito:
                     response = boto.create_group(**kwargs)                
                 BACKUP_USER_GRP="cognito_backup_users_"+ group["GroupName"] + "_" + userGroupFile + ".csv"
                 cognitS3.downloadFile(BACKUP_USER_GRP, FOLDER + BACKUP_USER_GRP)
-                csvGroups = CSV(FOLDER + "\" + BACKUP_USER_GRP)                    
+                csvGroups = CSV(FOLDER + "\\" + BACKUP_USER_GRP)                    
                 UserGroups = csvGroups.readBackup()                    
                 for u in UserGroups:                      
                       boto.admin_add_user_to_group(UserPoolId=self.USERPOOLID,Username=u["cognito:username"],GroupName=group["GroupName"])
