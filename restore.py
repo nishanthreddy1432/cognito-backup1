@@ -87,7 +87,7 @@ class Cognito:
                             kwargs[attribute] = str(group[attribute])
                     response = boto.create_group(**kwargs)                
                 BACKUP_USER_GRP="cognito_backup_users_"+ group["GroupName"] + "_" + userGroupFile + ".csv"
-                cognitS3.downloadFile(BACKUP_USER_GRP, FOLDER + BACKUP_USER_GRP)
+                cognitS3.downloadFile(BACKUP_USER_GRP, FOLDER + "\\" + BACKUP_USER_GRP)
                 csvGroups = CSV(FOLDER + "\\" + BACKUP_USER_GRP)                    
                 UserGroups = csvGroups.readBackup()                    
                 for u in UserGroups:                      
