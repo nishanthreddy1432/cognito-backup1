@@ -1,13 +1,11 @@
 import boto3
 import datetime
+from datetime import datetime
 import time
 import traceback
 import csv
 import requests
 import os
-
-# Use Jenkins WORKSPACE if available, otherwise use the current directory
-WORKSPACE = os.environ.get('WORKSPACE', os.getcwd())
 
 bsess = boto3.Session(profile_name='default')
 
@@ -44,7 +42,7 @@ class S3:
 
 class CSV:
     FILENAME = ""
-    FOLDER = os.path.join(WORKSPACE, 'dev/11/')
+    FOLDER = 'C:/Users/nisha/.jenkins/workspace/test/dev/11/'
 
     def __init__(self, filename):
         self.FILENAME = filename
@@ -70,7 +68,7 @@ class Cognito:
         self.REGION = region
         self.ATTRIBUTES = attributes
 
-    def importGroups(self, groups, userGroupFile):
+    def importGroups(self, groups, userGroupFile, cognitS3, FOLDER):
         try:
             boto = bsess.client('cognito-idp')
             for group in groups:
@@ -87,8 +85,10 @@ class Cognito:
                             kwargs[attribute] = int(group[attribute])
                         else:
                             kwargs[attribute] = str(group[attribute])
-                    response = boto.create_group(**kwargs)
-                csvGroups = CSV("cognito_backup_users_"+ group["GroupName"] + "_" + userGroupFile + ".csv")                    
+                    response = boto.create_group(**kwargs)                
+                BACKUP_USER_GRP="cognito_backup_users_"+ group["GroupName"] + "_" + userGroupFile + ".csv"
+                cognitS3.downloadFile(BACKUP_USER_GRP, FOLDER + BACKUP_USER_GRP)
+                csvGroups = CSV(BACKUP_USER_GRP)                    
                 UserGroups = csvGroups.readBackup()                    
                 for u in UserGroups:                      
                       boto.admin_add_user_to_group(UserPoolId=self.USERPOOLID,Username=u["cognito:username"],GroupName=group["GroupName"])
@@ -151,17 +151,18 @@ class Cognito:
 def main():
     REGION = "us-east-2"
     COGNITO_ID = "us-east-1_2etl4eauM"
-    BACKUP_DATE="20240129-1911"
+    BACKUP_DATE="20240131-1113"
     BACKUP_FILE_USERS = "cognito_backup_users_"+BACKUP_DATE+".csv"
     BACKUP_FILE_GROUPS = "cognito_backup_groups_"+BACKUP_DATE+".csv"
     BACKUP_BUCKET = "userpool-backup"
     cognitS3 = S3(BACKUP_BUCKET, REGION)
+    FOLDER = 'C:/Users/nisha/.jenkins/workspace/test/dev/11/'
 
     # DOWNLOAD GROUPS
-    cognitS3.downloadFile(BACKUP_FILE_GROUPS, os.path.join(WORKSPACE, BACKUP_FILE_GROUPS))
+    cognitS3.downloadFile(BACKUP_FILE_GROUPS, FOLDER + BACKUP_FILE_GROUPS)
 
     # IMPORT GROUPS
-    csvGroups = CSV(os.path.join(WORKSPACE, BACKUP_FILE_GROUPS))
+    csvGroups = CSV(FOLDER + BACKUP_FILE_GROUPS)
     groups = csvGroups.readBackup()
     GATTRIBUTES = [
         'GroupName',
@@ -169,10 +170,10 @@ def main():
         'Precedence'
     ]
     cognito = Cognito(COGNITO_ID, REGION, GATTRIBUTES)
-    cognito.importGroups(groups, BACKUP_DATE)
+    cognito.importGroups(groups, BACKUP_DATE, cognitS3, FOLDER)
 
     # DOWNLOAD USERS
-    cognitS3.downloadFile(BACKUP_FILE_USERS, os.path.join(WORKSPACE, BACKUP_FILE_USERS))
+    cognitS3.downloadFile(BACKUP_FILE_USERS, FOLDER + BACKUP_FILE_USERS)
 
     # IMPORT USERS
     ATTRIBUTES = [
@@ -180,6 +181,6 @@ def main():
         'username'
     ]
     cognitoUsers = Cognito(COGNITO_ID, REGION, ATTRIBUTES)
-    cognitoUsers.importUsers(os.path.join(WORKSPACE, BACKUP_FILE_USERS))
+    cognitoUsers.importUsers(FOLDER + BACKUP_FILE_USERS)
 
 main()
