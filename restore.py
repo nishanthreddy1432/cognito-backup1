@@ -149,12 +149,12 @@ class Cognito:
 
 
 def main():
-    REGION = "us-east-2"
-    COGNITO_ID = "us-east-1_0FCERKXAj"
-    BACKUP_DATE="20240131-1113"
+    REGION = os.environ.get('REGION', '')
+    COGNITO_ID = os.environ.get('COGNITO_ID', '')
+    BACKUP_DATE=os.environ.get('BACKUP_DATE', '')
     BACKUP_FILE_USERS = "cognito_backup_users_"+BACKUP_DATE+".csv"
     BACKUP_FILE_GROUPS = "cognito_backup_groups_"+BACKUP_DATE+".csv"
-    BACKUP_BUCKET = "userpool-backup"
+    BACKUP_BUCKET = os.environ.get('BACKUP_BUCKET', '')
     cognitS3 = S3(BACKUP_BUCKET, REGION)
     FOLDER = os.environ.get('WORKSPACE', '')
 
