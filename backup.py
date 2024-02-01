@@ -208,9 +208,9 @@ class S3:
             exit()
 
 def main():
-    REGION = "us-east-2"
-    COGNITO_ID = "us-east-1_0FCERKXAj"
-    BACKUP_BUCKET = "userpool-backup"
+    REGION =  os.environ.get('REGION', '')
+    COGNITO_ID = os.environ.get('COGNITO_ID', '')
+    BACKUP_BUCKET = os.environ.get('BACKUP_BUCKET', '')
     GATTRIBUTES = [
         'GroupName',
         'Description',
