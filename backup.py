@@ -201,6 +201,7 @@ class S3:
     
     def uploadFile(self, src, dest):
         try:
+            dest = "cognito-backup/" + dest 
             bsess.resource('s3').meta.client.upload_file(src, self.BUCKET, dest)
         except Exception as e:
             Logs.critical(f"Error uploading the backup file {src} to S3: {e}")
