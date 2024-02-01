@@ -159,6 +159,18 @@ def main():
     cognitS3 = S3(BACKUP_BUCKET, REGION)
     FOLDER = os.environ.get('WORKSPACE', '')
 
+    # DOWNLOAD USERS
+    cognitS3.downloadFile(BACKUP_FILE_USERS, FOLDER + BACKUP_FILE_USERS)
+
+    # IMPORT USERS
+    ATTRIBUTES = [
+        'email',
+        'username'
+    ]
+    cognitoUsers = Cognito(COGNITO_ID, REGION, ATTRIBUTES)
+    cognitoUsers.importUsers(FOLDER + BACKUP_FILE_USERS)
+    
+    
     # DOWNLOAD GROUPS
     cognitS3.downloadFile(BACKUP_FILE_GROUPS, FOLDER + BACKUP_FILE_GROUPS)
 
@@ -173,15 +185,6 @@ def main():
     cognito = Cognito(COGNITO_ID, REGION, GATTRIBUTES)
     cognito.importGroups(groups, BACKUP_DATE, cognitS3, FOLDER)
 
-    # DOWNLOAD USERS
-    cognitS3.downloadFile(BACKUP_FILE_USERS, FOLDER + BACKUP_FILE_USERS)
 
-    # IMPORT USERS
-    ATTRIBUTES = [
-        'email',
-        'username'
-    ]
-    cognitoUsers = Cognito(COGNITO_ID, REGION, ATTRIBUTES)
-    cognitoUsers.importUsers(FOLDER + BACKUP_FILE_USERS)
 
 main()
