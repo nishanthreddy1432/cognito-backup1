@@ -33,7 +33,7 @@ class S3:
 
     def downloadFile(self, src, dest):
         try:
-            dest = "cognito-backup" + dest
+            src = "cognito-backup" + src
             bsess.resource('s3').meta.client.download_file(self.BUCKET, src, dest)
         except Exception as e:
             Logs.critical("Error downloading file")
