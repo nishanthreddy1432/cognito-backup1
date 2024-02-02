@@ -142,6 +142,8 @@ class CSV:
             for user in records:
                 csv_line = csv_new_line.copy()
                 for requ_attr in self.ATTRIBUTES:
+                    print(requ_attr)
+                    print(user['Attributes'])
                     csv_line[requ_attr] = ''
                     if requ_attr in user.keys():
                         csv_line[requ_attr] = str(user[requ_attr])
