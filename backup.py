@@ -152,11 +152,11 @@ class CSV:
                         if usr_attr['Name'] == 'phone_number':
                             if usr_attr['Value'] == "":                                
                                csv_line['phone_number'] = '+10000000000'
-                        if usr_attr['Name'] == 'phone_number_verified':
-                            if usr_attr['Value'] == "true":
-                               csv_line['phone_number_verified'] = True                             
-                            if usr_attr['Value'] == "false":
-                               csv_line['phone_number_verified'] = False                                                             
+                        # if usr_attr['Name'] == 'phone_number_verified':
+                        #     if usr_attr['Value'] == "true":
+                        #        csv_line['phone_number_verified'] = True                             
+                        #     if usr_attr['Value'] == "false":
+                        #        csv_line['phone_number_verified'] = False                                                             
                 csv_line["cognito:mfa_enabled"] = "false"
                 csv_line["cognito:username"] = user["Username"]
                 self.CSV_LINES.append(",".join(csv_line.values()) + '\n')       
