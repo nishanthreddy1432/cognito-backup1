@@ -150,7 +150,9 @@ class CSV:
                         if usr_attr['Name'] == requ_attr:
                             csv_line[requ_attr] = str(usr_attr['Value'])
                         if usr_attr['Name'] == 'phone_number':
-                            if usr_attr['Value'] == "":                                
+                            print(usr_attr['Value'])
+                            print(type(usr_attr['Value']))
+                            if usr_attr['Value'] is None:                                
                                csv_line['phone_number'] = '+10000000000'
                         # if usr_attr['Name'] == 'phone_number_verified':
                         #     if usr_attr['Value'] == "true":
