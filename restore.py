@@ -73,7 +73,6 @@ class Cognito:
         try:
             boto = bsess.client('cognito-idp')
             for group in groups:
-                print(group)
                 if not self.checkIfGroupExists(group["GroupName"]):
                     kwargs = {
                         'UserPoolId': self.USERPOOLID
