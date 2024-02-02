@@ -141,6 +141,7 @@ class CSV:
             # ADD USERS
             for user in records:
                 csv_line = csv_new_line.copy()
+                print(user)
                 for requ_attr in self.ATTRIBUTES:
                     csv_line[requ_attr] = ''
                     if requ_attr in user.keys():
@@ -149,6 +150,7 @@ class CSV:
                     for usr_attr in user['Attributes']:
                         if usr_attr['Name'] == requ_attr:
                             csv_line[requ_attr] = str(usr_attr['Value'])
+                            print(usr_attr)
                         if usr_attr['Name'] == 'phone_number':
                             #if not usr_attr['Value'].strip():                                
                                csv_line['phone_number'] = '+10000000000'
