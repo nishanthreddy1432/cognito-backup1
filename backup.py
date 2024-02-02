@@ -147,7 +147,8 @@ class CSV:
                         csv_line[requ_attr] = str(user[requ_attr])
                         continue
                     csv_line['phone_number'] = '+10000000000'
-                    csv_line['phone_number_verified'] = 'FALSE'                        
+                    csv_line['phone_number_verified'] = 'FALSE'  
+                    #csv_line['phone_number_verified'] = 'false'  
                     for usr_attr in user['Attributes']:                        
                         if usr_attr['Name'] == requ_attr:
                             csv_line[requ_attr] = str(usr_attr['Value'])
@@ -155,10 +156,10 @@ class CSV:
                                csv_line['phone_number'] = str(usr_attr['Value'])
                         if usr_attr['Name'] == 'phone_number_verified':
                             csv_line['phone_number_verified'] = usr_attr['Value']
-                        #     if usr_attr['Value'] == "true":
-                        #        csv_line['phone_number_verified'] = True                             
-                        #     if usr_attr['Value'] == "false":
-                        #        csv_line['phone_number_verified'] = False                                                             
+                        #     if usr_attr['Value'] == "TRUE":
+                        #        csv_line['phone_number_verified'] = "true"                             
+                        #     if usr_attr['Value'] == "FALSE":
+                        #        csv_line['phone_number_verified'] = "false"                                                             
                 csv_line["cognito:mfa_enabled"] = "false"
                 csv_line["cognito:username"] = user["Username"]
                 self.CSV_LINES.append(",".join(csv_line.values()) + '\n')       
