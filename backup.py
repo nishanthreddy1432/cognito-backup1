@@ -156,9 +156,9 @@ class CSV:
                                csv_line['phone_number'] = str(usr_attr['Value'])
                         if usr_attr['Name'] == 'phone_number_verified':
                             csv_line['phone_number_verified'] = usr_attr['Value']
-                        #     if usr_attr['Value'] == "TRUE":
+                        #     if csv_line['phone_number_verified'] == "TRUE":
                         #        csv_line['phone_number_verified'] = "true"                             
-                        #     if usr_attr['Value'] == "FALSE":
+                        #     if csv_line['phone_number_verified'] == "FALSE":
                         #        csv_line['phone_number_verified'] = "false"                                                             
                 csv_line["cognito:mfa_enabled"] = "false"
                 csv_line["cognito:username"] = user["Username"]
