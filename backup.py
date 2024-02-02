@@ -148,13 +148,15 @@ class CSV:
                         csv_line[requ_attr] = str(user[requ_attr])
                         continue
                     for usr_attr in user['Attributes']:
+                        csv_line['phone_number'] = '+10000000000'
+                        csv_line['phone_number_verified'] = 'FALSE'
                         if usr_attr['Name'] == requ_attr:
                             csv_line[requ_attr] = str(usr_attr['Value'])
                             print(usr_attr)
-                        if usr_attr['Name'] == 'phone_number':
-                            #if not usr_attr['Value'].strip():                                
-                               csv_line['phone_number'] = '+10000000000'
-                        # if usr_attr['Name'] == 'phone_number_verified':
+                        if usr_attr['Name'] == 'phone_number':                               
+                               csv_line['phone_number'] = str(usr_attr['Value'])
+                        if usr_attr['Name'] == 'phone_number_verified':
+                            csv_line['phone_number_verified'] = usr_attr['Value']
                         #     if usr_attr['Value'] == "true":
                         #        csv_line['phone_number_verified'] = True                             
                         #     if usr_attr['Value'] == "false":
