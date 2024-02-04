@@ -8,7 +8,7 @@ import requests
 import os
 
 bsess = boto3.Session(profile_name='default')
-dateNow = ""
+dateNow=os.environ.get('BACKUP_DATE', '')
 class Logs:
     @staticmethod
     def warning(logBody):
@@ -150,8 +150,7 @@ class Cognito:
 
 def main():
     REGION = os.environ.get('REGION', '')
-    COGNITO_ID = os.environ.get('COGNITO_ID', '')
-    dateNow=os.environ.get('BACKUP_DATE', '')
+    COGNITO_ID = os.environ.get('COGNITO_ID', '')    
     BACKUP_FILE_USERS = "cognito_backup_users"+".csv"
     BACKUP_FILE_GROUPS = "cognito_backup_groups"+".csv"
     BACKUP_BUCKET = os.environ.get('BACKUP_BUCKET', '')
