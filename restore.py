@@ -69,7 +69,7 @@ class Cognito:
         self.REGION = region
         self.ATTRIBUTES = attributes
 
-    def importGroups(self, groups, userGroupFile, cognitS3, FOLDER):
+    def importGroups(self, groups, cognitS3, FOLDER):
         try:
             boto = bsess.client('cognito-idp')
             for group in groups:
@@ -182,7 +182,7 @@ def main():
     ]
     time.sleep(20)
     cognito = Cognito(COGNITO_ID, REGION, GATTRIBUTES)
-    cognito.importGroups(groups, BACKUP_DATE, cognitS3, FOLDER)
+    cognito.importGroups(groups, cognitS3, FOLDER)
 
 
 
