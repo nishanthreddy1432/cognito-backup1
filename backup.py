@@ -131,7 +131,7 @@ class CSV:
         # Use Jenkins workspace as the base folder
         self.FOLDER = os.environ.get('WORKSPACE', '')
         #self.FILENAME = "cognito_backup_" + prefix + "_" + datetime.now().strftime("%Y%m%d-%H%M") + ".csv"
-        self.FILENAME = "cognito_backup_" + prefix + "_" + dateNow + ".csv"
+        self.FILENAME = "cognito_backup_" + prefix + ".csv"
         self.CSV_LINES = []
 
     def generateUserContent(self, records):
@@ -217,7 +217,7 @@ class S3:
     
     def uploadFile(self, src, dest):
         try:
-            dest = "cognito-backup/" + dest 
+            dest = "cognito-backup/" + dateNow + "/"+ dest 
             bsess.resource('s3').meta.client.upload_file(src, self.BUCKET, dest)
         except Exception as e:
             Logs.critical(f"Error uploading the backup file {src} to S3: {e}")
