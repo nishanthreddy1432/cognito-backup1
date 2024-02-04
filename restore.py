@@ -178,7 +178,7 @@ def main():
     groups = csvGroups.readBackup()
     GATTRIBUTES = [
         'GroupName',
-        # 'Description',
+        'Description',
         'Precedence'
     ]
     time.sleep(20)
