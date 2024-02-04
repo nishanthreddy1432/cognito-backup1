@@ -265,7 +265,7 @@ def main():
         csvUsers.saveToFile()
 
         # Upload user data for each group
-        users_filename = "cognito_backup_users_{}_{}.csv".format(group['GroupName'], dateNow)
+        users_filename = "cognito_backup_users_{}.csv".format(group['GroupName'])
         cognitoS3.uploadFile(csvUsers.FOLDER + "/" + users_filename, users_filename)
 
 main()
