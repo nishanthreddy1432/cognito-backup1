@@ -181,6 +181,7 @@ def main():
         # 'Description',
         'Precedence'
     ]
+    time.sleep(20)
     cognito = Cognito(COGNITO_ID, REGION, GATTRIBUTES)
     cognito.importGroups(groups, BACKUP_DATE, cognitS3, FOLDER)
 
