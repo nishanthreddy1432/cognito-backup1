@@ -244,7 +244,7 @@ def main():
     csvUsers.generateUserContent(user_records)
     csvUsers.saveToFile()    
     Logs.info("Total Exported User Records: {}".format(len(csvUsers.CSV_LINES)))
-    cognitoS3.uploadFile(csvUsers.FOLDER + "/" + csvUsers.FILENAME, csvUsers.FILENAME)
+    cognitoS3.uploadFile(csvUsers.FOLDER + "/" + dateNow + "/" + csvUsers.FILENAME, csvUsers.FILENAME)
 
     csvGroups = CSV(GATTRIBUTES, "groups")
     group_records = cognito.listGroups()
