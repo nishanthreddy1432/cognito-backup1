@@ -146,7 +146,7 @@ class CSV:
                     if requ_attr in user.keys():
                         csv_line[requ_attr] = str(user[requ_attr])
                         continue
-                    csv_line['phone_number'] = '+10000000000'
+                    csv_line['phone_number'] = ' '
                     csv_line['phone_number_verified'] = 'FALSE'  
                     #csv_line['phone_number_verified'] = 'false'  
                     for usr_attr in user['Attributes']:                        
