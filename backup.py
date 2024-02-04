@@ -8,7 +8,7 @@ import traceback
 import os
 
 bsess = boto3.Session(profile_name='default')
-
+dateNow = datetime.now().strftime("%Y%m%d-%H%M")
 class Logs:
     @staticmethod
     def warning(logBody):
@@ -130,7 +130,8 @@ class CSV:
         self.ATTRIBUTES = attributes
         # Use Jenkins workspace as the base folder
         self.FOLDER = os.environ.get('WORKSPACE', '')
-        self.FILENAME = "cognito_backup_" + prefix + "_" + datetime.now().strftime("%Y%m%d-%H%M") + ".csv"
+        #self.FILENAME = "cognito_backup_" + prefix + "_" + datetime.now().strftime("%Y%m%d-%H%M") + ".csv"
+        self.FILENAME = "cognito_backup_" + prefix + "_" + dateNow + ".csv"
         self.CSV_LINES = []
 
     def generateUserContent(self, records):
