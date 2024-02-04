@@ -148,6 +148,7 @@ class CSV:
                         continue
                     csv_line['phone_number'] = ' '
                     csv_line['phone_number_verified'] = 'FALSE'  
+                    csv_line['email_verified'] = 'FALSE' 
                     #csv_line['phone_number_verified'] = 'false'  
                     for usr_attr in user['Attributes']:                        
                         if usr_attr['Name'] == requ_attr:
@@ -156,6 +157,8 @@ class CSV:
                                csv_line['phone_number'] = str(usr_attr['Value'])
                         if usr_attr['Name'] == 'phone_number_verified':
                             csv_line['phone_number_verified'] = usr_attr['Value']
+                        if usr_attr['Name'] == 'email_verified':
+                            csv_line['email_verified'] = usr_attr['Value']                            
                         #     if csv_line['phone_number_verified'] == "TRUE":
                         #        csv_line['phone_number_verified'] = "true"                             
                         #     if csv_line['phone_number_verified'] == "FALSE":
