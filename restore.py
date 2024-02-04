@@ -8,7 +8,7 @@ import requests
 import os
 
 bsess = boto3.Session(profile_name='default')
-
+dateNow = ""
 class Logs:
     @staticmethod
     def warning(logBody):
@@ -33,7 +33,7 @@ class S3:
 
     def downloadFile(self, src, dest):
         try:
-            src = "cognito-backup/" + src
+            src = "cognito-backup/" + dateNow + "/" + src
             bsess.resource('s3').meta.client.download_file(self.BUCKET, src, dest)
         except Exception as e:
             Logs.critical("Error downloading file")
@@ -151,9 +151,9 @@ class Cognito:
 def main():
     REGION = os.environ.get('REGION', '')
     COGNITO_ID = os.environ.get('COGNITO_ID', '')
-    BACKUP_DATE=os.environ.get('BACKUP_DATE', '')
-    BACKUP_FILE_USERS = "cognito_backup_users_"+BACKUP_DATE+".csv"
-    BACKUP_FILE_GROUPS = "cognito_backup_groups_"+BACKUP_DATE+".csv"
+    dateNow=os.environ.get('BACKUP_DATE', '')
+    BACKUP_FILE_USERS = "cognito_backup_users"+".csv"
+    BACKUP_FILE_GROUPS = "cognito_backup_groups"+".csv"
     BACKUP_BUCKET = os.environ.get('BACKUP_BUCKET', '')
     cognitS3 = S3(BACKUP_BUCKET, REGION)
     FOLDER = os.environ.get('WORKSPACE', '')
