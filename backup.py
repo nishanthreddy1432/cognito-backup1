@@ -165,8 +165,8 @@ class CSV:
                         #     if csv_line['phone_number_verified'] == "FALSE":
                         #        csv_line['phone_number_verified'] = "false"                                                             
                 csv_line["cognito:mfa_enabled"] = "false"
-                #csv_line["cognito:username"] = user["Username"]
-                csv_line["cognito:username"] = csv_line['email']
+                csv_line["cognito:username"] = user["Username"]
+                #csv_line["cognito:username"] = csv_line['email']
                 self.CSV_LINES.append(",".join(csv_line.values()) + '\n')       
             return self.CSV_LINES
         except Exception as e:
