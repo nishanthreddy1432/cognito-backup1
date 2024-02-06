@@ -82,11 +82,9 @@ class Cognito:
                         if attribute.isnumeric():
                             kwargs[attribute] = int(group[attribute])
                         elif attribute == "Precedence":
-                            try:
+        # Check if "Precedence" is not empty before attempting the conversion
+                            if group[attribute]:
                                 kwargs[attribute] = int(group[attribute])
-                            except (ValueError, TypeError):
-                                # Handle the case where "Precedence" is empty or not convertible to int
-                                kwargs[attribute] = DEFAULT_VALUE  # Set a default value or handle as needed
                         else:
                             kwargs[attribute] = str(group[attribute])
                     response = boto.create_group(**kwargs)                
